@@ -1,0 +1,24 @@
+{
+	"name": "Text Replace Tool",
+	"main": "index.html",
+	"window": {
+		"title": "文本批量替换工具",
+		"toolbar": false,
+		"frame": true,
+		"transparent": false,
+		"fullscreen": false,
+		"icon": "favicon.png",
+		"width": 1280,
+		"height": 720,
+		"min_width": 1280,
+		"min_height": 720,
+		"position":"center"
+	},
+	"webkit": {
+		"plugin": true
+	},
+	"dependencies": {
+		"encoding": "^0.1.13",
+		"iconv-lite": "^0.6.2"
+	}
+}

@@ -1,0 +1,168 @@
+{
+"appName":"Text Replace Tool",
+"author":"JMRY",
+"versionUpdate":[
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20230127",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"替换文字加入自定义函数执行功能。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20221108",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"替换文字加入||标识符，用于多个关键词替换成同一个字符串。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220922",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"完成手动保存、加载规则数据功能。",
+		"修复循环规则报错的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220921",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入手动保存规则数据功能（仅示例）。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220913",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入字符串中指定字符计数功能（text.count）。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220831",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入@规则引用功能（@规则名）。",
+		"优化规则识别逻辑。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220830",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入TRIM功能。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220817",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入手动插入选定规则功能。",
+		"加入手动格式化规则JSON功能。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220815",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入规则中循环次数获取功能。",
+		"加入最大循环执行次数，防止死循环。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220813",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入条件循环功能。",
+		"修复在已经替换完成的情况下，if仍然判定有效的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220812",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入对话框显示、关闭的动画效果。",
+		"优化切换规则时的动画效果。",
+		"优化对话框显示宽度和边距。",
+		"优化按钮字体和动画效果。",
+		"修复部分描述错误。",
+		"修复部分情况下，中文字体无法正常加载的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220811",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入多重嵌套的块级条件判断功能。",
+		"修复部分情况下，输入框字体显示异常的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220810",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"修复添加时也能复制的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220809",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入规则复制功能。",
+		"加入支持条件判定的规则。",
+		"加入切换规则时，播放动画效果。",
+		"加入type:'replace'可省略的功能。",
+		"加入插入位置可省略功能，默认插入尾部。",
+		"优化单次替换算法，支持按第N次查找并替换功能。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220803",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"更换应用图标。",
+		"加入拖放排序功能。",
+		"加入复制替换按钮，方便快速复制替换文本。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220802",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"完成复制、清空功能。",
+		"加入添加、编辑规则功能。",
+		"更换背景图，调整整体颜色显示。",
+		"修复在编辑窗口仍然可以点击添加按钮的bug。",
+		"修复第1条规则无法点开编辑的bug（0==false -> true导致）。",
+	""]
+},
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20220801",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"最初版本。",
+		"初步实现需求功能。",
+	""]
+}
+],
+"featuresDemand":[
+	
+""]
+}
