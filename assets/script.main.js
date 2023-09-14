@@ -257,6 +257,11 @@ function applyReplaceText(){
 		}
 	}
 	$(`#textReplaceInput`).val(makeText);
+	//行数
+	let originTextSplit=$(`#textOriginInput`).val().split(`\n`);
+	let replaceTextSplit=$(`#textReplaceInput`).val().split(`\n`);
+	$(`#originLineCount`).html(`${originTextSplit.length}行`);
+	$(`#replaceLineCount`).html(`${replaceTextSplit.length}行`);
 }
 
 function applyRuleContent(model){

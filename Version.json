@@ -1,7 +1,15 @@
 {
-"appName":"Text Replace Tool",
+"gameName":"Text Replace Tool",
 "author":"JMRY",
 "versionUpdate":[
+{
+	"mainVersion":"1.0",
+	"dateVersion":"20230905",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入原文和替换文本行数计算功能。",
+	""]
+},
 {
 	"mainVersion":"1.0",
 	"dateVersion":"20230127",
