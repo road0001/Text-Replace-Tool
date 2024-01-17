@@ -1,1 +1,13 @@
 *.log
+*.bin
+*.dat
+*.nexe
+*.pak
+*.exe
+*.dll
+locales
+pnacl
+swiftshader
+node_modules
+credits.html
+*.bak
