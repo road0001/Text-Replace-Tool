@@ -7,6 +7,8 @@
 	<script src="assets/jquery-3.0.0.min.js"></script>
 	<script src="assets/jquery.transit.js"></script>
 	<script src="assets/jquery.extensions.dom.js"></script>
+	<script src="assets/html.dom.js"></script>
+	<script src="assets/vue.global.js"></script>
 	<script src="assets/script.utils.js"></script>
 	<script src="assets/script.main.js"></script>
 	<script src="assets/Sortable.js"></script>
@@ -18,12 +20,12 @@
 	<div id="textZone" class="textZone">
 		<div class="textDisplayZone">
 			<div id="textOriginZone" class="textOriginZone">
-				原始文本
+				原始文本 <span id="originLineCount" class="originLineCount"></span>
 				<textarea id="textOriginInput" class="textOriginInput textInput"></textarea>
 				<div id="textOriginCtrl" class="textOriginCtrl ctrlZone"><button id="textOriginCopyBu" class="textOriginCopyBu ctrlBu lighting">▲复制原文▲</button> <button id="textReplaceCopyBu2" class="textReplaceCopyBu ctrlBu default">▼复制替换▼</button> <button id="textOriginClearBu" class="textOriginClearBu ctrlBu">清空</button></div>
 			</div>
 			<div id="textReplaceZone" class="textReplaceZone">
-				替换文本
+				替换文本 <span id="replaceLineCount" class="replaceLineCount"></span>
 				<textarea id="textReplaceInput" class="textReplaceInput textInput" readonly></textarea>
 				<div id="textOriginCtrl" class="textReplaceCtrl ctrlZone"><button id="textReplaceCopyBu" class="textReplaceCopyBu ctrlBu default">▲复制替换▲</button></div>
 			</div>

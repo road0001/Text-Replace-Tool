@@ -10,6 +10,7 @@ let replaceTypeList=[
 let storageData={}
 let storageRuleMap=new Map();
 function applyRuleList(){
+	return applyRuleListVue();
 	let ruleListDOM=[
 		// {tag:`button`,attr:{id:`replaceRuleBu_add`,class:`replaceRuleBu replaceAddBu`,html:`添加新规则`,bind:{click(){addNewRule()}}}},
 	];
@@ -64,6 +65,77 @@ function applyRuleList(){
 	// 	saveStorageData();
 	// 	// global.debugLog('rebuildOrder',evt);
 	// }
+}
+
+let ruleListVue;
+function applyRuleListVue(){
+	storageRuleMap=new Map();
+	for(let i=0; i<storageData.replaceRuleList.length; i++){
+		let curRule=storageData.replaceRuleList[i];
+		storageRuleMap.set(curRule.name, curRule.rules);
+	}
+	if(ruleListVue){
+		ruleListVue.reload();
+		ruleListVue.$forceUpdate();
+		return;
+	}
+
+	let RuleListLi={
+		props:{
+			index:Number,
+			name:String,
+			selected:Number,
+		},
+		methods:{
+			change(i){
+				changeRule(i);
+			},
+			edit(i){
+				editRule(i);
+			},
+			del(i){
+				delRule(i);
+			},
+		},
+		template:vHtml({
+			tag:`li`,Vid:'replaceRuleLi_{{index}}',
+			children:[
+				{tag:`div`,Vid:`replaceRuleDiv_{{index}}`,class:`replaceRuleDiv`,Vtest:`abc{{index}}{{bb}} == def{{index}}`,children:[
+					{tag:`button`,Vid:`replaceRuleBu_{{index}}`,class:`replaceRuleBu`, Vclass:`{selected:selected==index}`,html:`{{name}}`,vOnClick:`change(index)`},
+					{tag:`button`,Vid:`replaceRuleEditBu_{{index}}`,class:`replaceRuleEditBu replaceRuleCtrlBu`,vOnClick:`edit(index)`},
+					{tag:`button`,Vid:`replaceRuleDelBu_{{index}}`,class:`replaceRuleDelBu replaceRuleCtrlBu`,vOnClick:`del(index)`},
+				]},
+			]
+		}),
+		// template:`
+		// <li :id="'replaceRuleLi_'+index">
+		// 	<div :id="'replaceRuleDiv_'+index" class="replaceRuleDiv">
+		// 		<button :id="'replaceRuleBu_'+index" class="replaceRuleBu" :class="{selected:selected==index}" @click="change(index)">{{name}}</button>
+		// 		<button :id="'replaceRuleEditBu_'+index" class="replaceRuleEditBu replaceRuleCtrlBu"@click="edit(index)"></button>
+		// 		<button :id="'replaceRuleDelBu_'+index" class="replaceRuleDelBu replaceRuleCtrlBu"@click="del(index)"></button>
+		// 	</div>
+		// </li>`,
+	}
+	ruleListVue=Vue.createApp({
+		data(){
+			return {
+				ruleList:storageData.replaceRuleList,
+				selected:storageData.currentSelectRule,
+			}
+		},
+		methods:{
+			reload(){
+				this.ruleList=storageData.replaceRuleList;
+			}
+		},
+		components:{
+			RuleListLi,
+		},
+		template:vHtml({tag:`RuleListLi`,vFor:`(list,index) of ruleList`,Vindex:`index`,Vname:`list.name`,Vselected:`selected`}),
+		// template:`
+		// <RuleListLi v-for="(list,index) of ruleList" :index="index" :name="list.name" :selected="selected"></RuleListLi>
+		// `,
+	}).mount(`#replaceRuleList`);
 }
 
 function addNewRule(){
