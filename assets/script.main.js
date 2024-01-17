@@ -10,6 +10,7 @@ let replaceTypeList=[
 let storageData={}
 let storageRuleMap=new Map();
 function applyRuleList(){
+	return;
 	let ruleListDOM=[
 		// {tag:`button`,attr:{id:`replaceRuleBu_add`,class:`replaceRuleBu replaceAddBu`,html:`添加新规则`,bind:{click(){addNewRule()}}}},
 	];
@@ -66,6 +67,55 @@ function applyRuleList(){
 	// }
 }
 
+function RuleListRoot(){
+	const [ruleList, setRuleList]=React.useState(storageData.replaceRuleList);
+	const [ruleSelected, setRuleSelected]=React.useState(storageData.currentSelectRule);
+	
+	function RuleListLi({index,name,selected}){
+		function change(i){
+			changeRule(i);
+			refresh();
+		}
+		function edit(i){
+			editRule(i);
+			refresh();
+		}
+		function del(i){
+			delRule(i);
+			refresh();
+		}
+		function refresh(){
+			setRuleList(storageData.replaceRuleList);
+			setRuleSelected(storageData.currentSelectRule);
+		}
+		return rDOM({
+			tag:`li`,id:`replaceRuleLi_${index}`,children:[
+				{tag:`div`,id:`replaceRuleDiv_${index}`,className:`replaceRuleDiv`,children:[
+					{tag:`button`,id:`replaceRuleBu_${index}`,className:{replaceRuleBu:true, selected:selected==index},html:name,onClick:()=>change(index)},
+					{tag:`button`,id:`replaceRuleEditBu_${index}`,class:`replaceRuleEditBu replaceRuleCtrlBu`,onClick:()=>edit(index)},
+					{tag:`button`,id:`replaceRuleDelBu_${index}`,class:`replaceRuleDelBu replaceRuleCtrlBu`,vOnClick:()=>del(index)},
+				]}
+			]
+		});
+	}
+
+	return rDOM(
+		ruleList.map((rule,index)=>({
+			tag:RuleListLi,index:index,name:rule.name,selected:ruleSelected,
+		}))
+	);
+}
+
+function applyRuleListReact(){
+	storageRuleMap=new Map();
+	for(let i=0; i<storageData.replaceRuleList.length; i++){
+		let curRule=storageData.replaceRuleList[i];
+		storageRuleMap.set(curRule.name, curRule.rules);
+	}
+	const ruleListRoot=ReactDOM.createRoot(document.getElementById(`replaceRuleList`));
+	ruleListRoot.render(rDOM(RuleListRoot));
+}
+
 function addNewRule(){
 	showRuleEditForm();
 	// storageData.replaceRuleList.push({
@@ -83,8 +133,8 @@ function addNewRule(){
 async function changeRule(index,anim){
 	console.log(`ChangeRule: ${index}`);
 	storageData.currentSelectRule=index;
-	$(`.replaceRuleBu`).removeClass(`selected`);
-	$(`#replaceRuleBu_${index}`).addClass(`selected`);
+	// $(`.replaceRuleBu`).removeClass(`selected`);
+	// $(`#replaceRuleBu_${index}`).addClass(`selected`);
 	
 	saveStorageData();
 	if(anim!=false){
@@ -543,7 +593,8 @@ function showSaveRuleForm(bool){
 
 
 function applyStorageData(){
-	applyRuleList();
+	// applyRuleList();
+	applyRuleListReact();
 	applyOriginText();
 	applyReplaceText();
 }
