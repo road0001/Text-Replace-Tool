@@ -1,6 +1,8 @@
 let defaultStorageData={
+	tabList:[],
 	replaceRuleList:[],
 	currentSelectRule:-1,
+	currentSelectTab:-1,
 	originText:``,
 }
 let replaceTypeList=[
@@ -35,9 +37,9 @@ function applyRuleList(){
 			let sortArray=new Array();
 			let sortSelect;
 			for(let i=0; i<evt.to.children.length; i++){
-				sortArray.push(storageData.replaceRuleList[parseInt(evt.to.children[i].getAttribute(`dragIndex`))]);
-				if(parseInt(evt.to.children[i].getAttribute(`dragIndex`)) == storageData.currentSelectRule){
-					console.log(`CS: ${parseInt(evt.to.children[i].getAttribute(`dragIndex`))} TG: ${i}`);
+				sortArray.push(storageData.replaceRuleList[parseInt(evt.to.children[i].getAttribute(`drag-index`))]);
+				if(parseInt(evt.to.children[i].getAttribute(`drag-index`)) == storageData.currentSelectRule){
+					console.log(`CS: ${parseInt(evt.to.children[i].getAttribute(`drag-index`))} TG: ${i}`);
 					sortSelect=i;
 				}
 			}
@@ -45,7 +47,7 @@ function applyRuleList(){
 			applyRuleList();
 			changeRule(sortSelect,false);
 			applyReplaceText();
-			saveStorageData();
+			saveStorageDataDelay();
 		}
 	});
 
@@ -61,7 +63,7 @@ function applyRuleList(){
 	// 	storageData.replaceRuleList=sortArray;
 	// 	applyRuleList();
 	// 	applyReplaceText();
-	// 	saveStorageData();
+	// 	saveStorageDataDelay();
 	// 	// global.debugLog('rebuildOrder',evt);
 	// }
 }
@@ -77,7 +79,7 @@ function addNewRule(){
 	// 	]
 	// });
 	// applyRuleList();
-	// saveStorageData();
+	// saveStorageDataDelay();
 }
 
 async function changeRule(index,anim){
@@ -86,7 +88,7 @@ async function changeRule(index,anim){
 	$(`.replaceRuleBu`).removeClass(`selected`);
 	$(`#replaceRuleBu_${index}`).addClass(`selected`);
 	
-	saveStorageData();
+	saveStorageDataDelay();
 	if(anim!=false){
 		$(`.textDisplayZone`).anim({opacity:0,transform:`translate(-4px)`},125).then(()=>{
 			$(`.textDisplayZone`).anim({opacity:0,transform:`translate(4px)`},0).then(()=>{
@@ -106,7 +108,7 @@ function copyRule(index){
 	storageData.replaceRuleList.splice(index+1,0,curRule);
 	applyRuleList();
 	applyReplaceText();
-	saveStorageData();
+	saveStorageDataDelay();
 }
 
 function delRule(index){
@@ -117,7 +119,7 @@ function delRule(index){
 		}
 		applyRuleList();
 		applyReplaceText();
-		saveStorageData();
+		saveStorageDataDelay();
 	}
 }
 
@@ -148,7 +150,7 @@ function showRuleEditForm(index){
 				// `}},
 				{tag:`table`,attr:{class:`editTable`,html:`
 					<tr><td class="tableTitle">规则名称</td><td class="tableContent"><input id="ruleName" class="ruleName"></td></tr>
-					<tr><td class="tableTitle">规则详情</td><td class="tableContent"><textarea id="ruleContent" class="ruleContent"></textarea></td></tr>
+					<tr style="height:auto;"><td class="tableTitle">规则详情</td><td class="tableContent"><textarea id="ruleContent" class="ruleContent"></textarea></td></tr>
 				`}},
 			]}},
 			{tag:`div`,attr:{id:`contentCtrl`,class:`contentCtrl`,children:[
@@ -230,7 +232,7 @@ function showRuleEditForm(index){
 		if(optSuccess==true){
 			applyRuleList();
 			applyReplaceText();
-			saveStorageData();
+			saveStorageDataDelay();
 			showRuleEditForm(false);
 		}
 	}
@@ -467,17 +469,30 @@ function execFunction(itext,func){
 
 }
 
-function copyContent(id){
-	let textarea=document.getElementById(id);
-	textarea.select();
-	document.execCommand(`Copy`);
+async function copyContent(id){
+	let text=$(`#${id}`).val();
+	try{
+		await navigator.clipboard.writeText(text);
+		let t=await navigator.clipboard.readText();
+		if(t==text){
+			toast(`【${t}】复制成功！`,`success`);
+		}
+	}catch(e){}
+	// let textarea=document.getElementById(id);
+	// textarea.select();
+	// document.execCommand(`Copy`);
+	// navigator.clipboard.readText().then(t=>{
+	// 	if(t){
+	// 		toast(`【${t}】复制成功！`,`success`);
+	// 	}
+	// })
 }
 
 function clearContent(){
 	$(`#textOriginInput`).val(``);
 	storageData.originText=$(`#textOriginInput`).val();
 	applyReplaceText();
-	saveStorageData();
+	saveStorageDataDelay();
 }
 
 function showSaveRuleForm(bool){
@@ -534,27 +549,101 @@ function showSaveRuleForm(bool){
 			return;
 		}
 		storageData=tempRule;
+		applyTab();
 		applyRuleList();
 		applyReplaceText();
-		saveStorageData();
+		saveStorageDataDelay();
 		showSaveRuleForm(false);
 	}
 }
 
+function showReplaceWindowForm(bool){
+	if(bool===false){
+		//动画
+		$(`#editWindow`).anim({scale:0.9},250);
+		$(`#editForm`).anim({opacity:0},250).then(()=>{
+			$(`#editForm`).remove();
+		});
+		return;
+	}
+
+	let textSp=$(`#textReplaceInput`).val().split(`\n`);
+	$(`body`).appendDOM(`div`,{id:`editForm`,class:`editForm`,children:[
+		{tag:`div`,attr:{id:`editWindow`,class:`editWindow`,children:[
+			{tag:`div`,attr:{id:`editTitle`,class:`editTitle`,html:`<button class="editTitleBu">分行文本</button>`}},
+			{tag:`div`,attr:{id:`editContent`,class:`editContent textWindowContent`,children:[
+				{tag:`table`,class:`editTable editWindowTable`,tr:textSp.map((t, i)=>{
+					return {id:`textTr_${i}`,class:`textTr ${i%2==0?``:`odd`}`,td:[
+						{class:`copyTd`,children:[
+							{tag:`button`,id:`copyBu_${i}`,class:`textWindowCopyBu textReplaceCopyBu ctrlBu default`,html:`复制`,bind:{
+								click:{
+									data:{i:i,t:t},
+									function(e){
+										$(`.textTr`).removeClass(`copy`);
+										navigator.clipboard.writeText(e.data.t).then(r=>{
+											navigator.clipboard.readText().then(t=>{
+												if(t==e.data.t){
+													$(`#textTr_${e.data.i}`).addClass(`copy`);
+													toast(`【${t}】复制成功！`,`success`);
+												}
+											})
+										});
+									}
+								}
+							}}
+						]},
+						{class:`numTd`,html:i+1},
+						{id:`textTd_${i}`,class:`textTd`,html:t},
+					]}
+				})},
+			]}},
+			{tag:`div`,attr:{id:`editCtrl`,class:`editCtrl`,children:[
+				{tag:`button`,attr:{id:`editCancelBu`,class:`editCancelBu`,html:`关闭窗口`,bind:{click(){showReplaceWindowForm(false)}}}},
+			]}},
+		]}},
+	]});
+
+	//动画
+	$(`#editForm`).anim({opacity:0},0).then(()=>{
+		$(`#editForm`).anim({opacity:1},250);
+	});
+	$(`#editWindow`).anim({scale:0.9},0).then(()=>{
+		$(`#editWindow`).anim({scale:1},250);
+	});
+}
+
+let fullScreenZone=``;
+function showFullScreen(form, bool){
+	if(bool==undefined){
+		bool=!$(`.${form}`).hasClass(`full`);
+	}
+	$(`.textSubZone`).css(`opacity`,1);
+	$(`.textZone, .textSubZone`).removeClass(`full`);
+	// $(`.textZone, .${form}`).removeClass(`full`);
+	fullScreenZone=``;
+	if(bool){
+		$(`.textSubZone`).css(`opacity`,0);
+		$(`.textZone, .${form}`).addClass(`full`);
+		fullScreenZone=form;
+	}
+	saveStorageDataDelay();
+}
+
 
 function applyStorageData(){
+	applyTab();
 	applyRuleList();
 	applyOriginText();
 	applyReplaceText();
 }
 
-function main(){
-	loadStorageData();
+async function main(){
+	await loadStorageData();
 	storageData={
 		...defaultStorageData,
 		...storageData,
 	};
-	saveStorageData();
+	await saveStorageDataDelay();
 	applyStorageData();
 
 	$(`#replaceRuleBu_add`).bind(`click`,function(){
@@ -571,15 +660,57 @@ function main(){
 		copyContent(`textReplaceInput`);
 	});
 
+	$(`#textReplaceWindowBu`).bind(`click`,function(){
+		showReplaceWindowForm(true);
+	});
+
+	$(`#textOriginFullBu`).bind(`click`,function(){
+		showFullScreen(`textOriginZone`);
+	});
+	$(`#textReplaceFullBu`).bind(`click`,function(){
+		showFullScreen(`textReplaceZone`);
+	});
+
 	$(`#textOriginClearBu`).bind(`click`,function(){
-		clearContent(`textOriginInput`);
+		if(window.confirm(`确定清空全部内容？`)){
+			clearContent(`textOriginInput`);
+		}
 	});
 
 	$(`#textOriginInput`).bind(`input`,function(){
 		storageData.originText=$(`#textOriginInput`).val();
 		applyReplaceText();
-		saveStorageData();
+		saveStorageDataDelay();
 	});
+
+	$(`#tabBu_new`).bind(`click`,function(){
+		let tabName=prompt(`请输入标签名：`).trim();
+		if(typeof tabName!=`string`){
+			return;
+		}
+		if(!tabName){
+			tabName=`新标签 ${storageData.tabList.length+1}`;
+		}
+		addTab(tabName,false);
+	});
+
+	let selZone=document.getElementById(`tabList`);
+	selZone.addEventListener(`mousewheel`,handler,false);
+	function handler(event){
+		event.preventDefault();
+		var detail = event.wheelDelta || event.detail;
+		var moveForwardStep = -1;
+		var moveBackStep = 1;
+		var step = 0;
+		var stepRatio=50;
+		if(detail > 0){
+			step = moveForwardStep*stepRatio;
+		}else{
+			step = moveBackStep * stepRatio;
+		}
+		selZone.scrollLeft += step;
+		return false;
+	}
 }
 
 window.onload=function(){

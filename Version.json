@@ -3,6 +3,58 @@
 "author":"JMRY",
 "versionUpdate":[
 {
+	"mainVersion":"1.0.5",
+	"dateVersion":"20250812",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入标签排序功能。",
+		"加入标签复制功能。",
+		"加入标签重命名功能。",
+		"加入关闭标签时删除确认提示。",
+		"调整标签最小宽度。",
+		"迁移LocalStorage为IndexedDB，以提升储存容量与性能。",
+		"修复拖拽排序规则时报错的bug。",
+		"修复导入配置时，标签未应用的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0.4",
+	"dateVersion":"20250225",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入多标签全屏记忆功能。",
+	""]
+},
+{
+	"mainVersion":"1.0.3",
+	"dateVersion":"20250225",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"优化标签分割线。",
+		"修复初始化时报错的bug。",
+	""]
+},
+{
+	"mainVersion":"1.0.2",
+	"dateVersion":"20250224",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入多标签功能。",
+		"加入输入框扩大功能。",
+		"加入配置数据日期备份功能。",
+		"加入复制成功的验证和提示文本。",
+	""]
+},
+{
+	"mainVersion":"1.0.1",
+	"dateVersion":"20241225",
+	"versionName":"Milestone 1",
+	"versionDesc":[
+		"加入分行模式。",
+		"加入清空确认对话框。",
+	""]
+},
+{
 	"mainVersion":"1.0",
 	"dateVersion":"20230905",
 	"versionName":"Milestone 1",

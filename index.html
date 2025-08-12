@@ -1,7 +1,7 @@
 ﻿<head>
 	<meta http-equiv="Content-Language" content="zh-cn">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>文本批量替换工具</title>
+	<title title="文本批量替换工具">文本批量替换工具</title>
 	<link rel="icon" href="favicon.png" type="image/x-ico"/>
 	<link rel="stylesheet" href="assets/style.main.css">
 	<script src="assets/jquery-3.0.0.min.js"></script>
@@ -9,23 +9,25 @@
 	<script src="assets/jquery.extensions.dom.js"></script>
 	<script src="assets/script.utils.js"></script>
 	<script src="assets/script.main.js"></script>
+	<script src="assets/script.tab.js"></script>
 	<script src="assets/Sortable.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0">
 	<button id="replaceRuleBu_add" class="replaceRuleBu replaceAddBu">+</button>
 	<button id="replaceRuleBu_save" class="replaceRuleBu replaceAddBu replaceSaveBu">+</button>
+	<div id="tabList" class="tabList"><ul id="tabUl" class="tabUl"></ul><button id="tabBu_new" class="tabBu default new">+</button></div>
 	<div class="replaceRuleList"><ul id="replaceRuleList"></ul></div>
 	<div id="textZone" class="textZone">
 		<div class="textDisplayZone">
-			<div id="textOriginZone" class="textOriginZone">
-				原始文本
+			<div id="textOriginZone" class="textSubZone textOriginZone">
+				原始文本 <span id="originLineCount" class="originLineCount"></span>
 				<textarea id="textOriginInput" class="textOriginInput textInput"></textarea>
-				<div id="textOriginCtrl" class="textOriginCtrl ctrlZone"><button id="textOriginCopyBu" class="textOriginCopyBu ctrlBu lighting">▲复制原文▲</button> <button id="textReplaceCopyBu2" class="textReplaceCopyBu ctrlBu default">▼复制替换▼</button> <button id="textOriginClearBu" class="textOriginClearBu ctrlBu">清空</button></div>
+				<div id="textOriginCtrl" class="textOriginCtrl ctrlZone"><button id="textOriginFullBu" class="textOriginFullBu ctrlBu lighting icon" title="放大">▣</button> <button id="textOriginCopyBu" class="textOriginCopyBu ctrlBu lighting">▲复制原文▲</button> <button id="textReplaceCopyBu2" class="textReplaceCopyBu ctrlBu default">▼复制替换▼</button> <button id="textReplaceWindowBu" class="textReplaceCopyBu ctrlBu">▣分行窗口▣</button> <button id="textOriginClearBu" class="textOriginClearBu ctrlBu">清空</button></div>
 			</div>
-			<div id="textReplaceZone" class="textReplaceZone">
-				替换文本
+			<div id="textReplaceZone" class="textSubZone textReplaceZone">
+				替换文本 <span id="replaceLineCount" class="replaceLineCount"></span>
 				<textarea id="textReplaceInput" class="textReplaceInput textInput" readonly></textarea>
-				<div id="textOriginCtrl" class="textReplaceCtrl ctrlZone"><button id="textReplaceCopyBu" class="textReplaceCopyBu ctrlBu default">▲复制替换▲</button></div>
+				<div id="textOriginCtrl" class="textReplaceCtrl ctrlZone"><button id="textReplaceFullBu" class="textReplaceFullBu ctrlBu lighting icon" title="放大">▣</button> <button id="textReplaceCopyBu" class="textReplaceCopyBu ctrlBu default">▲复制替换▲</button></div>
 			</div>
 		</div>
 	</div>

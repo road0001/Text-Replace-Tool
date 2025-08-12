@@ -52,8 +52,16 @@ if(typeof jQuery===`function`){
 					switch(key){
 						//Class数组化处理
 						case `class`:
-							if(typeof cur_dom_attr==`object`){
-								cur_dom_attr=cur_dom_attr.join(` `);
+							if(typeof cur_dom_attr==`object` && cur_dom_attr.length){
+								cur_dom_attr=cur_dom_attr.join(` `).trim();
+							}else if(typeof cur_dom_attr==`object` && cur_dom_attr.length==undefined){
+								let classList=[];
+								for(let key in cur_dom_attr){
+									if(cur_dom_attr[key]==true){
+										classList.push(key);
+									}
+								}
+								cur_dom_attr=classList.join(` `).trim();
 							}
 						break;
 	
@@ -96,16 +104,17 @@ if(typeof jQuery===`function`){
 			let dom_attr_fix_blacklist=[
 				`tag`,`attachType`,
 			]
-			let dom_attr_fix_replace={
-				tagName:`tag`, attrName:`attr`,
-			}
+			let dom_attr_fix_replace=new Map([
+				[`tagName`,`tag`],[`tag_name`,`tagName`],
+				[`attrName`,`attr`],[`attr_name`,`attrName`],
+			]);
 			let dom_attr_fix={};
 			if(dom_tag.attr==undefined){
 				for(let key in dom_tag){
 					if(!dom_attr_fix_blacklist.includes(key)){
 						let key_fix=key;
-						for(let origin in dom_attr_fix_replace){
-							key_fix=key_fix.replace(origin,dom_attr_fix_replace[origin]);
+						if(dom_attr_fix_replace.get(key)){
+							key_fix=dom_attr_fix_replace.get(key_fix);
 						}
 						dom_attr_fix[key_fix]=dom_tag[key];
 					}
@@ -270,6 +279,10 @@ if(typeof jQuery===`function`){
 			let default_children={
 				tag:undefined,attr:undefined,html:undefined,attachType:`append`
 			};
+			if(attach_type==`prepend` || attach_type==`before`){
+				//往插入时，将数组调转，以确保插入顺序和数组顺序一致
+				dom_tag.reverse();
+			}
 			for(let cur of dom_tag){
 				cur={
 					...JSON.parse(JSON.stringify(default_children)),
